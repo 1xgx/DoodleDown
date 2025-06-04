@@ -24,7 +24,7 @@ public class LazerRenderer : MonoBehaviour
         _actions.Action.Pressed.started += OnPerformed;
         _actions.Action.Pressed.canceled += OnPerformed;
     }
-    private void OnDisbale()
+    private void OnDisable()
     {
         _actions.Disable();
         _actions.Action.Pressed.performed -= OnCancled;
@@ -50,6 +50,7 @@ public class LazerRenderer : MonoBehaviour
         targetPosition.z = 0.0f;
         transform.position = targetPosition;
         _player.setTarget(targetPosition);
+        
     }
 
 }

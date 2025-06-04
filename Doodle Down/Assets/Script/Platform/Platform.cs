@@ -3,28 +3,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Platform : MonoBehaviour, IMoveable, ISpeedable
+public class Platform : MonoBehaviour
 {
     [Header ("Base Parametrs")]
     [SerializeField] private TypeOfObject _type;
     [SerializeField] private float _speed;
     [SerializeField] private Vector2 _position;
+    public Transform Top;
+    public Transform Bottom;
     public TypeOfObject Type => _type;
-
-
-    private void Update()
-    {
-        Move();
-        DeletePlatform();
-    }
-    private void Move()
-    {
-        transform.Translate(Vector2.up * Time.deltaTime * _speed);
-    }
-    public void SetSpeed(float speed)
-    {
-        _speed = speed;
-    }
     public void GetPosition(Vector2 position)
     {
         _position = position;
