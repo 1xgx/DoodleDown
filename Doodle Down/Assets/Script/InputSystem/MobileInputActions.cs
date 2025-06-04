@@ -46,7 +46,7 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
+                    ""name"": ""Pressed"",
                     ""type"": ""Button"",
                     ""id"": ""66a0a7be-bc7b-41b0-932c-4fa6ad728488"",
                     ""expectedControlType"": ""Button"",
@@ -62,6 +62,15 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Player"",
+                    ""type"": ""Value"",
+                    ""id"": ""0ee1e261-2d45-4bc8-b22c-066e78cdd6d3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -94,18 +103,7 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""12233951-f0ca-4722-8ca1-17df3a0ccda8"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
+                    ""action"": ""Pressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -116,7 +114,7 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jump"",
+                    ""action"": ""Pressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -130,6 +128,28 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PhoneRotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b0e25d7-a5e3-4403-9dc7-a8aa04323998"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Player"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6956ab4-c248-4d93-8832-09084b0e7429"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Player"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -140,8 +160,9 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
         m_Action = asset.FindActionMap("Action", throwIfNotFound: true);
         m_Action_TurnLeftorRight = m_Action.FindAction("TurnLeftorRight", throwIfNotFound: true);
         m_Action_TurnRight = m_Action.FindAction("TurnRight", throwIfNotFound: true);
-        m_Action_Jump = m_Action.FindAction("Jump", throwIfNotFound: true);
+        m_Action_Pressed = m_Action.FindAction("Pressed", throwIfNotFound: true);
         m_Action_PhoneRotate = m_Action.FindAction("PhoneRotate", throwIfNotFound: true);
+        m_Action_Player = m_Action.FindAction("Player", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,16 +226,18 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
     private List<IActionActions> m_ActionActionsCallbackInterfaces = new List<IActionActions>();
     private readonly InputAction m_Action_TurnLeftorRight;
     private readonly InputAction m_Action_TurnRight;
-    private readonly InputAction m_Action_Jump;
+    private readonly InputAction m_Action_Pressed;
     private readonly InputAction m_Action_PhoneRotate;
+    private readonly InputAction m_Action_Player;
     public struct ActionActions
     {
         private @MobileInputActions m_Wrapper;
         public ActionActions(@MobileInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @TurnLeftorRight => m_Wrapper.m_Action_TurnLeftorRight;
         public InputAction @TurnRight => m_Wrapper.m_Action_TurnRight;
-        public InputAction @Jump => m_Wrapper.m_Action_Jump;
+        public InputAction @Pressed => m_Wrapper.m_Action_Pressed;
         public InputAction @PhoneRotate => m_Wrapper.m_Action_PhoneRotate;
+        public InputAction @Player => m_Wrapper.m_Action_Player;
         public InputActionMap Get() { return m_Wrapper.m_Action; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,12 +253,15 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
             @TurnRight.started += instance.OnTurnRight;
             @TurnRight.performed += instance.OnTurnRight;
             @TurnRight.canceled += instance.OnTurnRight;
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
+            @Pressed.started += instance.OnPressed;
+            @Pressed.performed += instance.OnPressed;
+            @Pressed.canceled += instance.OnPressed;
             @PhoneRotate.started += instance.OnPhoneRotate;
             @PhoneRotate.performed += instance.OnPhoneRotate;
             @PhoneRotate.canceled += instance.OnPhoneRotate;
+            @Player.started += instance.OnPlayer;
+            @Player.performed += instance.OnPlayer;
+            @Player.canceled += instance.OnPlayer;
         }
 
         private void UnregisterCallbacks(IActionActions instance)
@@ -246,12 +272,15 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
             @TurnRight.started -= instance.OnTurnRight;
             @TurnRight.performed -= instance.OnTurnRight;
             @TurnRight.canceled -= instance.OnTurnRight;
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
+            @Pressed.started -= instance.OnPressed;
+            @Pressed.performed -= instance.OnPressed;
+            @Pressed.canceled -= instance.OnPressed;
             @PhoneRotate.started -= instance.OnPhoneRotate;
             @PhoneRotate.performed -= instance.OnPhoneRotate;
             @PhoneRotate.canceled -= instance.OnPhoneRotate;
+            @Player.started -= instance.OnPlayer;
+            @Player.performed -= instance.OnPlayer;
+            @Player.canceled -= instance.OnPlayer;
         }
 
         public void RemoveCallbacks(IActionActions instance)
@@ -273,7 +302,8 @@ public partial class @MobileInputActions: IInputActionCollection2, IDisposable
     {
         void OnTurnLeftorRight(InputAction.CallbackContext context);
         void OnTurnRight(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
+        void OnPressed(InputAction.CallbackContext context);
         void OnPhoneRotate(InputAction.CallbackContext context);
+        void OnPlayer(InputAction.CallbackContext context);
     }
 }

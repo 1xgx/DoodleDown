@@ -8,7 +8,7 @@ public class Platform : MonoBehaviour, IMoveable, ISpeedable
     [Header ("Base Parametrs")]
     [SerializeField] private TypeOfObject _type;
     [SerializeField] private float _speed;
-    [SerializeField] private Vector3 _position;
+    [SerializeField] private Vector2 _position;
     public TypeOfObject Type => _type;
 
 
@@ -19,13 +19,13 @@ public class Platform : MonoBehaviour, IMoveable, ISpeedable
     }
     private void Move()
     {
-        transform.Translate(Vector3.up * Time.deltaTime * _speed);
+        transform.Translate(Vector2.up * Time.deltaTime * _speed);
     }
     public void SetSpeed(float speed)
     {
         _speed = speed;
     }
-    public void GetPosition(Vector3 position)
+    public void GetPosition(Vector2 position)
     {
         _position = position;
     }

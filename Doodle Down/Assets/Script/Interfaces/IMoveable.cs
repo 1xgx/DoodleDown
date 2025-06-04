@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IMoveable
 {
-    void GetPosition(Vector3 position);
+    void GetPosition(Vector2 position);
 }

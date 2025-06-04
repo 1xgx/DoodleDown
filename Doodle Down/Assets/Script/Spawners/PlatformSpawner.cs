@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlatformSpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _objectsReference;
-    [SerializeField] private Vector3 _objectOffset;
+    [SerializeField] private Vector2 _objectOffset;
     [SerializeField] private float _objectSpeed;
     [SerializeField] private float _delay = 1.0f;
     private void Start()
@@ -17,7 +17,7 @@ public class PlatformSpawner : MonoBehaviour
     {
         int index = Random.Range(0, _objectsReference.Count);
         float X = Random.Range(-2.9f, 2.9f);
-        _objectOffset = new Vector3(X, 1.0f, 0);
+        _objectOffset = new Vector2(X, 1.0f);
         GameObject newObject = Instantiate(_objectsReference[index], _objectOffset, Quaternion.identity);
         newObject.GetComponent<ISpeedable>().SetSpeed(_objectSpeed); // Test
         
